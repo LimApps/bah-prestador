@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "117003871662",
+    "firebase_url": "https://buscala-novo-default-rtdb.firebaseio.com",
+    "project_id": "buscala-novo",
+    "storage_bucket": "buscala-novo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117003871662:android:61c4e4bba82a0c214d943f",
+        "android_client_info": {
+          "package_name": "com.buscala.lojista"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "117003871662-9sf55q98fqd7utk5nks2iu1n2873a323.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5aoYZZDwZzeikMu-udSQ5elwsAWMymu0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "117003871662-9sf55q98fqd7utk5nks2iu1n2873a323.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117003871662:android:e6bd31df02ba0db14d943f",
+        "android_client_info": {
+          "package_name": "com.buscala.motorista"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "117003871662-9sf55q98fqd7utk5nks2iu1n2873a323.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5aoYZZDwZzeikMu-udSQ5elwsAWMymu0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "117003871662-9sf55q98fqd7utk5nks2iu1n2873a323.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117003871662:android:2c0d949e5223712d4d943f",
+        "android_client_info": {
+          "package_name": "com.buscala.passageiro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "117003871662-9sf55q98fqd7utk5nks2iu1n2873a323.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5aoYZZDwZzeikMu-udSQ5elwsAWMymu0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "117003871662-9sf55q98fqd7utk5nks2iu1n2873a323.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
