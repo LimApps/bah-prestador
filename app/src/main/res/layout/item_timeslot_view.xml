@@ -26,9 +26,9 @@
             android:layout_weight="1"
             android:background="@color/white"
             android:gravity="center"
-            android:text="10 am - 11 pm"
+            android:text="de 10:00 as 11:00  "
             android:textColor="#202020"
-            android:textSize="@dimen/_12ssp"
+            android:textSize="11sp"
             android:textStyle="bold"
             app:customTypeFace="@string/systemMediumFont" />
 

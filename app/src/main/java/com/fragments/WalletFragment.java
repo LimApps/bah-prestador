@@ -6,6 +6,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,11 +27,14 @@ import com.view.MTextView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
+
 
 /**
- * Created by Admin on 27-05-2017.
+ * alterado em 24/03/2022.
  */
 
 public class WalletFragment extends Fragment {
@@ -193,7 +198,8 @@ public class WalletFragment extends Fragment {
 
                                 String dDateOrig = generalFunc.getJsonValueStr("dDateOrig", obj_temp);
                                 map.put("dDateOrig", dDateOrig);
-                                map.put("listingFormattedDate", generalFunc.convertNumberWithRTL(generalFunc.getDateFormatedType(dDateOrig, Utils.OriginalDateFormate, CommonUtilities.OriginalDateFormate)));
+                                map.put("listingFormattedDate", generalFunc.convertNumberWithRTL(
+                                        generalFunc.getDateFormatedType(dDateOrig, Utils.OriginalDateFormate, CommonUtilities.OriginalDateFormate)));
                                 String iBalance = generalFunc.getJsonValueStr("iBalance", obj_temp);
                                 map.put("iBalance", iBalance);
                                 map.put("FormattediBalance", generalFunc.convertNumberWithRTL(iBalance));
@@ -211,8 +217,19 @@ public class WalletFragment extends Fragment {
 
                         ((MTextView) view.findViewById(R.id.yourBalTxt)).setText(generalFunc.retrieveLangLBl("", "LBL_USER_BALANCE"));
 
+                        NumberFormat currency = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
-                        ((MTextView) view.findViewById(R.id.walletamountTxt)).setText(LBL_BALANCE);
+                        String vls = LBL_BALANCE.replace("R$ ", "");
+                        String valorRS = vls.replace("R$", "");
+                        double db = Double.parseDouble(valorRS);
+                        valorRS = currency.format(db);
+
+                        ((MTextView) view.findViewById(R.id.walletamountTxt)).setText(valorRS );
+                        //((MTextView) view.findViewById(R.id.walletamountTxt)).setText(LBL_BALANCE);
+
+                        Log.i("TESTE currency",  valorRS);
+                        //TODO GEOVANE FORMATAR NUMEROS
+
 
 
                         if (!nextPage.equals("") && !nextPage.equals("0")) {

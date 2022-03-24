@@ -21,7 +21,7 @@ import com.view.MTextView;
 import java.util.ArrayList;
 
 /**
- * Created by Admin on 04-11-2016.
+ * alterado em 24/03/2022.
  */
 public class MyWalletHistoryActivity extends AppCompatActivity {
 

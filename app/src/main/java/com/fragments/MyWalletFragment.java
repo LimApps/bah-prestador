@@ -66,10 +66,15 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Timer;
 
+/**
+ * alterado em 24/03/2022.
+ */
 public class MyWalletFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
 
     View view;
@@ -342,7 +347,18 @@ public class MyWalletFragment extends Fragment implements CompoundButton.OnCheck
                         String userProfileJson = generalFunc.retrieveValue(Utils.USER_PROFILE_JSON);
                         JSONObject object = generalFunc.getJsonObject(userProfileJson);
 
-                        ((MTextView) view.findViewById(R.id.walletamountTxt)).setText(generalFunc.convertNumberWithRTL(generalFunc.getJsonValue("MemberBalance", responseString)));
+                        NumberFormat currency = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+                        String LBL_BALANCE = generalFunc.convertNumberWithRTL(generalFunc.getJsonValue("MemberBalance", responseString));
+                        String vls = LBL_BALANCE.replace("R$ ", "");
+                        String valorRS = vls.replace("R$", "");
+                        double db = Double.parseDouble(valorRS);
+                        valorRS = currency.format(db);
+
+                        ((MTextView) view.findViewById(R.id.walletamountTxt)).setText(valorRS );
+
+                        Log.i("TESTE currency",  valorRS);
+                        //TODO GEOVANE FORMATAR NUMEROS
+                        //((MTextView) view.findViewById(R.id.walletamountTxt)).setText(generalFunc.convertNumberWithRTL(generalFunc.getJsonValue("MemberBalance", responseString)));
 
                         if (!generalFunc.getJsonValue("user_available_balance", userProfileJson).equalsIgnoreCase(generalFunc.getJsonValue("MemberBalance", responseString))) {
                             generalFunc.storeData(Utils.ISWALLETBALNCECHANGE, "Yes");
@@ -542,8 +558,18 @@ public class MyWalletFragment extends Fragment implements CompoundButton.OnCheck
                     String nextPage = generalFunc.getJsonValue("NextPage", responseString);
                     JSONArray arr_transhistory = generalFunc.getJsonArray(Utils.message_str, responseString);
 
+                    String LBL_BALANCE =  generalFunc.convertNumberWithRTL(generalFunc.getJsonValue("MemberBalance", responseString));
+                    NumberFormat currency = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+                    String vls = LBL_BALANCE.replace("R$ ", "");
+                    String valorRS = vls.replace("R$", "");
+                    double db = Double.parseDouble(valorRS);
+                    valorRS = currency.format(db);
+                    ((MTextView) view.findViewById(R.id.walletamountTxt)).setText(valorRS);
 
-                    ((MTextView) view.findViewById(R.id.walletamountTxt)).setText(generalFunc.convertNumberWithRTL(generalFunc.getJsonValue("MemberBalance", responseString)));
+                    Log.i("TESTE currency",  valorRS);
+                    //TODO GEOVANE FORMATAR NUMEROS
+
+                    //((MTextView) view.findViewById(R.id.walletamountTxt)).setText(generalFunc.convertNumberWithRTL(generalFunc.getJsonValue("MemberBalance", responseString)));
 
                     if (!generalFunc.getJsonValue("user_available_balance", userProfileJson).equalsIgnoreCase(generalFunc.getJsonValue("MemberBalance", responseString))) {
                         generalFunc.storeData(Utils.ISWALLETBALNCECHANGE, "Yes");
@@ -1232,7 +1258,16 @@ public class MyWalletFragment extends Fragment implements CompoundButton.OnCheck
                 String LBL_BALANCE = generalFunc.getJsonValue("user_available_balance", responseString);
 
                 ((MTextView) view.findViewById(R.id.yourBalTxt)).setText(generalFunc.retrieveLangLBl("", "LBL_USER_BALANCE"));
-                ((MTextView) view.findViewById(R.id.walletamountTxt)).setText(generalFunc.convertNumberWithRTL(LBL_BALANCE));
+
+
+                NumberFormat currency = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+                String vls = LBL_BALANCE.replace("R$ ", "");
+                String valorRS = vls;
+                double db = Double.parseDouble(valorRS);
+                valorRS = currency.format(db);
+                ((MTextView) view.findViewById(R.id.walletamountTxt)).setText(valorRS);
+
+                //((MTextView) view.findViewById(R.id.walletamountTxt)).setText(generalFunc.convertNumberWithRTL(LBL_BALANCE));
 
 
             } else {
@@ -1483,10 +1518,30 @@ public class MyWalletFragment extends Fragment implements CompoundButton.OnCheck
         }
     }
 
-    public void mangeMinusView(AutoFitEditText rechargeBox) {
+    public void mangeMinusView(AutoFitEditText rechargeBox) {/***
         if (Utils.checkText(rechargeBox) == true && GeneralFunctions.parseDoubleValue(0, rechargeBox.getText().toString()) > 0) {
 
             rechargeBox.setText(String.format("%.2f", (double) (GeneralFunctions.parseDoubleValue(0.0, rechargeBox.getText().toString()) - 1)));
+
+
+        } else {
+            rechargeBox.setText(defaultAmountVal);
+
+        }***/
+
+        double nummenos = Double.parseDouble(rechargeBox.getText().toString().replace(",","."));
+
+        if (Utils.checkText(rechargeBox) == true && nummenos > 0) {
+
+
+            String resultado = String.format("%.2f", nummenos);
+
+            String num = String.valueOf(resultado).replace(".", ",");
+            rechargeBox.setText(num);
+
+            //TODO: GEOVANE ESTEVE AQUI E CORRIGIU
+
+            //rechargeBox.setText(String.format("%.2f", (double) (GeneralFunctions.parseDoubleValue(0.0, rechargeBox.getText().toString()) - 1)));
 
 
         } else {
@@ -1497,6 +1552,30 @@ public class MyWalletFragment extends Fragment implements CompoundButton.OnCheck
 
 
     public void mangePluseView(AutoFitEditText rechargeBox) {
+
+
+        if (Utils.checkText(rechargeBox) == true) {
+
+
+            double num = Double.parseDouble(rechargeBox.getText().toString().replace(",","."));
+            num++;
+            String resultado = String.format("%.2f", num);
+
+            String str = String.valueOf(resultado).replace(".", ",");
+            rechargeBox.setText(str);
+            //TODO: GEOVANE ESTEVE AQUI E CORRIGIU
+
+
+            //rechargeBox.setText(String.format("%.2f", (double) (GeneralFunctions.parseDoubleValue(0.0, rechargeBox.getText().toString()) + 1)));
+
+
+        } else {
+            rechargeBox.setText("1.00");
+
+
+        }
+
+        /***
         if (Utils.checkText(rechargeBox) == true) {
 
             rechargeBox.setText(String.format("%.2f", (double) (GeneralFunctions.parseDoubleValue(0.0, rechargeBox.getText().toString()) + 1)));
@@ -1506,7 +1585,7 @@ public class MyWalletFragment extends Fragment implements CompoundButton.OnCheck
             rechargeBox.setText("1.00");
 
 
-        }
+        }***/
     }
 
     public void checkValues(AutoFitEditText rechargeBox) {
@@ -1648,7 +1727,18 @@ public class MyWalletFragment extends Fragment implements CompoundButton.OnCheck
 
 
                     String memberBalance = generalFunc.getJsonValue("MemberBalance", responseString);
-                    ((MTextView) view.findViewById(R.id.walletamountTxt)).setText(generalFunc.convertNumberWithRTL(memberBalance));
+
+                    NumberFormat currency = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+                    String vls = memberBalance.replace("R$ ", "");
+                    String valorRS = vls.replace("R$", "");
+                    double db = Double.parseDouble(valorRS);
+                    valorRS = currency.format(db);
+                    ((MTextView) view.findViewById(R.id.walletamountTxt)).setText(valorRS);
+
+                    Log.i("TESTE currency",  valorRS);
+                    //TODO GEOVANE FORMATAR NUMEROS
+
+                   // ((MTextView) view.findViewById(R.id.walletamountTxt)).setText(generalFunc.convertNumberWithRTL(memberBalance));
 
                     generalFunc.storeData(Utils.USER_PROFILE_JSON, generalFunc.getJsonValue(Utils.message_str, responseString));
                     generalFunc.showGeneralMessage("",

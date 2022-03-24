@@ -3,6 +3,8 @@ package com.adapter.files;
 import android.content.Context;
 import android.graphics.Color;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +15,13 @@ import com.buscala.motorista.R;
 import com.general.files.GeneralFunctions;
 import com.view.MTextView;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
- * Created by Admin on 09-07-2016.
+ * alterado em 24/03/2022.
  */
 public class WalletHistoryRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -29,8 +33,10 @@ public class WalletHistoryRecycleAdapter extends RecyclerView.Adapter<RecyclerVi
     boolean isFooterEnabled = false;
     View footerView;
     FooterViewHolder footerHolder;
+    Locale locale = new Locale("pt","BR");//ALTERAÇÃO: NOVO LOCALE  INFORMADO
 
-    public WalletHistoryRecycleAdapter(Context mContext, ArrayList<HashMap<String, String>> list, GeneralFunctions generalFunc, boolean isFooterEnabled) {
+    public WalletHistoryRecycleAdapter(Context mContext, ArrayList<HashMap<String, String>> list,
+                                       GeneralFunctions generalFunc, boolean isFooterEnabled) {
         this.mContext = mContext;
         this.list = list;
         this.generalFunc = generalFunc;
@@ -41,11 +47,13 @@ public class WalletHistoryRecycleAdapter extends RecyclerView.Adapter<RecyclerVi
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         if (viewType == TYPE_FOOTER) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.footer_list, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.footer_list,
+                    parent, false);
             this.footerView = v;
             return new FooterViewHolder(v);
         } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_wallethistory_design, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_wallethistory_design,
+                    parent, false);
 
             return new ViewHolder(view);
         }
@@ -61,9 +69,21 @@ public class WalletHistoryRecycleAdapter extends RecyclerView.Adapter<RecyclerVi
             final HashMap<String, String> item = list.get(position);
             final ViewHolder viewHolder = (ViewHolder) holder;
 
-            viewHolder.transactiondateTxt.setText(item.get("listingFormattedDate"));
+            viewHolder.transactiondateTxt.setText(item.get("listingFormattedDate"));//TODO: FORMATAR DA RECEBIDA, (ESTÁ DATA APARECE NO HISTPORICO DA CARTEIRA)
+           // Log.i("TESTE DATA: ",item.get("listingFormattedDate"));
+
             viewHolder.transactionDesVTxt.setText(item.get("tDescriptionConverted"));
-            viewHolder.tranasctionBalVTxt.setText(item.get("FormattediBalance"));
+
+
+            NumberFormat currency = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+            String vls = item.get("FormattediBalance").replace("R$ ","");
+            String valorRS = vls.replace("R$", "");
+            double db = Double.parseDouble(valorRS);
+            valorRS = currency.format(db);
+            viewHolder.tranasctionBalVTxt.setText(valorRS);
+            Log.i("TESTE  BalVTxt ",  valorRS);//TODO GEOVANE FORMATAR NUMEROS
+
+           // viewHolder.tranasctionBalVTxt.setText(item.get("FormattediBalance"));
 
 
 
@@ -141,7 +161,7 @@ public class WalletHistoryRecycleAdapter extends RecyclerView.Adapter<RecyclerVi
         private View colorview;
 
         public ViewHolder(View view) {
-            super(view);
+            super(view);//alteracao realizada:
 
             arrowImg = (ImageView) view.findViewById(R.id.arrowImg);
             tranasctionBalVTxt = (MTextView) view.findViewById(R.id.tranasctionBalVTxt);

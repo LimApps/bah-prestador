@@ -105,6 +105,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+/**
+ * alterado em 24/03/2022.
+ */
 public class ActiveTripActivity extends BaseActivity implements OnMapReadyCallback, GetLocationUpdates.LocationUpdatesListener {
 
     public static final int MEDIA_TYPE_IMAGE = 1;
@@ -248,6 +251,7 @@ public class ActiveTripActivity extends BaseActivity implements OnMapReadyCallba
     ImageView callArea, chatArea, navigateAreaUP, dropAllAreaUP, dropCancel;
     RelativeLayout chatview, callview;
 
+    Locale locale = new Locale("pt","BR");//ALTERAÇÃO: NOVO LOCALE  INFORMADO
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -621,7 +625,8 @@ public class ActiveTripActivity extends BaseActivity implements OnMapReadyCallba
             findViewById(R.id.mProgressBar).setVisibility(View.GONE);
         }
 
-        if (data_trip != null && (data_trip.get("eFareType").equals(Utils.CabFaretypeFixed) || data_trip.get("eFareType").equals(Utils.CabFaretypeHourly))) {
+        if (data_trip != null && (data_trip.get("eFareType").equals(Utils.CabFaretypeFixed)
+                || data_trip.get("eFareType").equals(Utils.CabFaretypeHourly))) {
             googleImage.setVisibility(View.GONE);
         } else {
             if (eType.equalsIgnoreCase(Utils.CabGeneralType_Ride)) {
@@ -672,7 +677,8 @@ public class ActiveTripActivity extends BaseActivity implements OnMapReadyCallba
             startTripSlideButton.setButtonText(generalFunc.retrieveLangLBl("", "LBL_BTN_SLIDE_BEGIN_TRIP_TXT"));
 
             if (Utils.checkText(data_trip.get("iStopId")) && currentStopOverPoint < totalStopOverPoint) {
-                endTripSlideButton.setButtonText(LBL_CONFIRM_STOPOVER_1 + " " + LBL_CONFIRM_STOPOVER_2 + " " + generalFunc.convertNumberWithRTL(data_trip.get("currentStopOverPoint")));
+                endTripSlideButton.setButtonText(LBL_CONFIRM_STOPOVER_1 + " " + LBL_CONFIRM_STOPOVER_2
+                        + " " + generalFunc.convertNumberWithRTL(data_trip.get("currentStopOverPoint")));
             } else {
                 endTripSlideButton.setButtonText(LBL_BTN_SLIDE_END_TRIP_TXT);
             }
@@ -683,7 +689,8 @@ public class ActiveTripActivity extends BaseActivity implements OnMapReadyCallba
         } else {
             startTripSlideButton.setButtonText(generalFunc.retrieveLangLBl("", "LBL_SLIDE_BEGIN_DELIVERY"));
             if (Utils.checkText(data_trip.get("iStopId")) && currentStopOverPoint < totalStopOverPoint) {
-                endTripSlideButton.setButtonText((LBL_CONFIRM_STOPOVER_1 + " " + LBL_CONFIRM_STOPOVER_2 + " " + generalFunc.convertNumberWithRTL(data_trip.get("currentStopOverPoint"))));
+                endTripSlideButton.setButtonText((LBL_CONFIRM_STOPOVER_1 + " " + LBL_CONFIRM_STOPOVER_2
+                        + " " + generalFunc.convertNumberWithRTL(data_trip.get("currentStopOverPoint"))));
             } else {
                 endTripSlideButton.setButtonText(generalFunc.retrieveLangLBl("", "LBL_SLIDE_END_DELIVERY"));
             }
@@ -2889,7 +2896,7 @@ public class ActiveTripActivity extends BaseActivity implements OnMapReadyCallba
         }
 
         // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", locale).format(new Date());
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg");

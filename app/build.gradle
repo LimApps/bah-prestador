@@ -9,11 +9,17 @@ android {
     }
     signingConfigs {
         config {
+            keyAlias 'teste123'
+            keyPassword 'teste123'
+            storeFile file('jks/teste.jks')
+            storePassword 'teste123'
+        }
+      /***  config {
             keyAlias 'buscala'
             keyPassword 'buscala'
             storeFile file('jks/buscala.jks')
             storePassword 'buscala'
-        }
+        }***/
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

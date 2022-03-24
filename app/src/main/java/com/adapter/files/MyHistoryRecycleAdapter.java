@@ -29,8 +29,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
 /**
- * Created by Admin on 09-07-2016.
+ * alterado em 24/03/2022.
  */
 public class MyHistoryRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -150,7 +151,22 @@ public class MyHistoryRecycleAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             if (Utils.checkText(iActive)) {
                 viewHolder.statusArea.setVisibility(View.VISIBLE);
-                viewHolder.statusVTxt.setText(item.get("iActive"));
+
+                String iActiv = item.get("iActive");
+
+                if(iActiv.equals("Canceled")){ iActiv = "Cancelado";}
+                else if(iActiv.equals("Finished")){ iActiv = "Concluído";}
+                else if(iActiv.equals("Pending")){ iActiv = "Pendente";}
+                else if(iActiv.equals("Accepted")){ iActiv = "Aceita";}
+
+                viewHolder.statusVTxt.setText(iActiv);
+
+                //TODO: GEOVANE ESTEVE AQUI E CORRIGIU
+
+                //viewHolder.statusVTxt.setText(item.get("iActive"));
+
+
+
             }
 
             if (generalFunc.isRTLmode()) {
@@ -368,7 +384,9 @@ public class MyHistoryRecycleAdapter extends RecyclerView.Adapter<RecyclerView.V
                 });
             }
 
-            if (item.get("iActive").equalsIgnoreCase("Finished") || item.get("iActive").equalsIgnoreCase("Canceled")) {
+            if (item.get("iActive")
+                    .equalsIgnoreCase("Finished")
+                    || item.get("iActive").equalsIgnoreCase("Canceled")) {
                 //viewHolder.userImgView.setVisibility(View.GONE);
                 //viewHolder.userImageArea.setVisibility(View.GONE);
                 //viewHolder.timeTxt.setVisibility(View.INVISIBLE);

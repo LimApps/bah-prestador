@@ -19,8 +19,9 @@ import com.buscala.motorista.BuildConfig;
 import com.buscala.motorista.R;
 import com.utils.Utils;
 
+
 /**
- * Created by Admin on 20/03/18.
+ * alterado em 24/03/2022.
  */
 
 public class LocalNotification {
@@ -116,7 +117,7 @@ public class LocalNotification {
         }
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_stat_driver_logo)
+                .setSmallIcon(R.mipmap.ic_launcher)//REALIZADO POR GEOVANE: ALTERADO ICONE NOTIFICAÇÕES PARA IC_LAUNCHER, ANTERIOR: R.drawable.ic_stat_driver_logo
                 .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_launcher))
                 .setContentTitle(mContext.getString(R.string.app_name))
                 .setContentText(message)

@@ -61,12 +61,14 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Timer;
 
 /**
- * Created by Admin on 04-11-2016.
+ * alterado em 24/03/2022.
  */
 public class MyWalletActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
@@ -474,9 +476,21 @@ public class MyWalletActivity extends AppCompatActivity implements CompoundButto
                         transferState = "VERIFY";
 
                         verificationCode = generalFunc.getJsonValue("verificationCode", message);
+                        //TODO: GEOVANE ALTERAR FORMATAÇÃO NUMERICA
                         String amount = String.format("%.2f", (double) generalFunc.parseDoubleValue(0.00, Utils.getText(autofitEditText)));
-                        this.amount = generalFunc.getJsonValue("CurrencySymbol", userProfileJson) + "" + generalFunc.convertNumberWithRTL(amount);
-                        ;
+
+
+                        NumberFormat currency = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+                        String vls = autofitEditText.getText().toString().replace("R$ ", "");
+                        String valorRS = vls.replace("R$", "");
+                        double db = Double.parseDouble(valorRS);
+                        valorRS = currency.format(db);
+                        this.amount =  amount;
+                        Log.i("TESTE currency",  valorRS);
+                        //TODO GEOVANE FORMATAR NUMEROS
+
+                        //this.amount = generalFunc.getJsonValue("CurrencySymbol", userProfileJson)  + "" + generalFunc.convertNumberWithRTL(amount);
+
                         //transferMap.put("fAmount", generalFunc.getJsonValue("CurrencySymbol", userProfileJson) + "" + generalFunc.convertNumberWithRTL(amount));
                         configureView();
                     } else if (transferState.equalsIgnoreCase("VERIFY")) {
@@ -540,6 +554,7 @@ public class MyWalletActivity extends AppCompatActivity implements CompoundButto
                         generalFunc.storeData(Utils.USER_PROFILE_JSON, generalFunc.getJsonValue("message_profile_data", responseString));
 
                         transactionDate = generalFunc.getJsonValue("transactionDate", responseString);
+                        Log.i("TESTE DATA: ", generalFunc.getJsonValue("transactionDate", responseString));
 
                         openSucessDialog();
                     } else {
@@ -870,7 +885,18 @@ public class MyWalletActivity extends AppCompatActivity implements CompoundButto
                     }
 
                     String memberBalance = generalFunc.getJsonValue("MemberBalance", responseString);
-                    ((MTextView) findViewById(R.id.walletamountTxt)).setText(generalFunc.convertNumberWithRTL(memberBalance));
+
+                    NumberFormat currency = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+                    String vls =   memberBalance.replace("R$ ", "");
+                    String valorRS = vls.replace("R$", "");
+                    double db = Double.parseDouble(valorRS);
+                    valorRS = currency.format(db);
+
+                    ((MTextView) findViewById(R.id.walletamountTxt)).setText(valorRS);
+                    Log.i("TESTE currency",  valorRS);
+                    //TODO GEOVANE FORMATAR NUMEROS
+
+                   // ((MTextView) findViewById(R.id.walletamountTxt)).setText(generalFunc.convertNumberWithRTL(memberBalance));
 
                     generalFunc.storeData(Utils.USER_PROFILE_JSON, generalFunc.getJsonValue(Utils.message_str, responseString));
                     generalFunc.showGeneralMessage("",
@@ -983,9 +1009,21 @@ public class MyWalletActivity extends AppCompatActivity implements CompoundButto
 
 
                 String LBL_BALANCE = generalFunc.getJsonValue("user_available_balance", responseString);
+                ((MTextView) findViewById(R.id.yourBalTxt)).setText(generalFunc.retrieveLangLBl("", "LBL_USER_BALANCE"));
+                // ((MTextView) findViewById(R.id.walletamountTxt)).setText(generalFunc.convertNumberWithRTL(LBL_BALANCE));
+
+                NumberFormat currency = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+                String vls = LBL_BALANCE.replace("R$ ", "");;
+                String valorRS = vls.replace("R$", "");
+                double db = Double.parseDouble(valorRS);
+                valorRS = currency.format(db);
+
+                ((MTextView) findViewById(R.id.walletamountTxt)).setText(valorRS);
+                Log.i("TESTE currency",  valorRS);
+                //TODO GEOVANE FORMATAR NUMEROS
 
                 ((MTextView) findViewById(R.id.yourBalTxt)).setText(generalFunc.retrieveLangLBl("", "LBL_USER_BALANCE"));
-                ((MTextView) findViewById(R.id.walletamountTxt)).setText(generalFunc.convertNumberWithRTL(LBL_BALANCE));
+                //((MTextView) findViewById(R.id.walletamountTxt)).setText(generalFunc.convertNumberWithRTL(LBL_BALANCE));
 
 
             } else {
@@ -1062,7 +1100,21 @@ public class MyWalletActivity extends AppCompatActivity implements CompoundButto
                         String userProfileJson = generalFunc.retrieveValue(Utils.USER_PROFILE_JSON);
                         JSONObject object = generalFunc.getJsonObject(userProfileJson);
 
-                        ((MTextView) findViewById(R.id.walletamountTxt)).setText(generalFunc.convertNumberWithRTL(generalFunc.getJsonValue("MemberBalance", responseString)));
+
+                        String saldoCarteira = generalFunc.convertNumberWithRTL( generalFunc.getJsonValue("MemberBalance", responseString));
+                        // ((MTextView) findViewById(R.id.walletamountTxt)).setText(generalFunc.convertNumberWithRTL(generalFunc.getJsonValue("MemberBalance", responseString)));
+
+                        NumberFormat currency = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+                        String vls =  saldoCarteira.replace("R$ ", "");
+                        String valorRS = vls.replace("R$", "");
+                        double db = Double.parseDouble(valorRS);
+                        valorRS = currency.format(db);
+
+                        ((MTextView) findViewById(R.id.walletamountTxt)).setText(valorRS);
+                        Log.i("TESTE currency",  valorRS);
+                        //TODO GEOVANE FORMATAR NUMEROS
+
+                       // ((MTextView) findViewById(R.id.walletamountTxt)).setText(generalFunc.convertNumberWithRTL(generalFunc.getJsonValue("MemberBalance", responseString)));
 
                         if (!generalFunc.getJsonValue("user_available_balance", userProfileJson).equalsIgnoreCase(generalFunc.getJsonValue("MemberBalance", responseString))) {
                             generalFunc.storeData(Utils.ISWALLETBALNCECHANGE, "Yes");
@@ -1193,7 +1245,18 @@ public class MyWalletActivity extends AppCompatActivity implements CompoundButto
                     String nextPage = generalFunc.getJsonValue("NextPage", responseString);
                     JSONArray arr_transhistory = generalFunc.getJsonArray(Utils.message_str, responseString);
 
-                    ((MTextView) findViewById(R.id.walletamountTxt)).setText(generalFunc.convertNumberWithRTL(generalFunc.getJsonValue("MemberBalance", responseString)));
+                    String saldoCarteira = generalFunc.convertNumberWithRTL(generalFunc.getJsonValue("MemberBalance", responseString));
+                    NumberFormat currency = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+                    String vls = saldoCarteira.replace("R$ ", "");
+                    String valorRS = vls.replace("R$", "");
+                    double db = Double.parseDouble(valorRS);
+                    valorRS = currency.format(db);
+                    ((MTextView) findViewById(R.id.walletamountTxt)).setText(valorRS);
+
+                    //TODO GEOVANE FORMATAR NUMEROS
+
+
+                    //((MTextView) findViewById(R.id.walletamountTxt)).setText(generalFunc.convertNumberWithRTL( generalFunc.getJsonValue("MemberBalance", responseString)));
 
                     if (!generalFunc.getJsonValue("user_available_balance", userProfileJson).equalsIgnoreCase(generalFunc.getJsonValue("MemberBalance", responseString))) {
                         generalFunc.storeData(Utils.ISWALLETBALNCECHANGE, "Yes");
@@ -1224,6 +1287,7 @@ public class MyWalletActivity extends AppCompatActivity implements CompoundButto
                             String dDateOrig = generalFunc.getJsonValueStr("dDateOrig", obj_temp);
                             map.put("dDateOrig", dDateOrig);
                             map.put("listingFormattedDate", generalFunc.convertNumberWithRTL(generalFunc.getDateFormatedType(dDateOrig, Utils.OriginalDateFormate, CommonUtilities.OriginalDateFormate)));
+
 
                             String iBalance = generalFunc.getJsonValueStr("iBalance", obj_temp);
                             map.put("iBalance", iBalance);

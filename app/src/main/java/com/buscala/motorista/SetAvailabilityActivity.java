@@ -29,6 +29,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 
+/**
+ * alterado em 24/03/2022.
+ */
 public class SetAvailabilityActivity extends AppCompatActivity implements DaySlotAdapter.setRecentDateSlotClickList,TimeSlotAdapter.setRecentTimeSlotClickList {
 
     GeneralFunctions generalFunc;
@@ -135,7 +138,10 @@ int screenWidth;
         daylist = new ArrayList<>();
         passApidaylist = new ArrayList();
         passApidaylist1 = new ArrayList();
-        Locale locale = new Locale(generalFunc.retrieveValue(Utils.LANGUAGE_CODE_KEY));
+
+
+        Locale locale = new Locale("pt","BR");//ALTERAÇÃO: NOVO LOCALE  INFORMADO
+       // Locale locale = new Locale(generalFunc.retrieveValue(Utils.LANGUAGE_CODE_KEY));
 
 
         String[] namesOfDays;
@@ -329,6 +335,10 @@ int screenWidth;
 
     public void settimeSlotData() {
 
+
+        String LBL_AM_TXT = generalFunc.retrieveLangLBl("am", "LBL_AM_TXT");
+        String LBL_PM_TXT = generalFunc.retrieveLangLBl("pm", "LBL_PM_TXT");
+
         for (int i = 0; i <= 23; i++) {
             HashMap<String, String> map = new HashMap<>();
             HashMap<String, String> checkmap = new HashMap<>();
@@ -346,7 +356,7 @@ int screenWidth;
             String seltoTime = "";
 
             if (fromtime == 0) {
-                fromtime = 12;
+                fromtime = 00;//ALTERAÇÃO: 12 PARA 00
             }
 
             if (fromtime < 10) {
@@ -379,7 +389,10 @@ int screenWidth;
                     Totimedisp = toTime + "";
                 }
 
-                map.put("name", generalFunc.convertNumberWithRTL(fromtimedisp + " " + generalFunc.retrieveLangLBl("am", "LBL_AM_TXT") + " - " + Totimedisp + " " + generalFunc.retrieveLangLBl(i == 11 ? "pm" : "am", i == 11 ? "LBL_PM_TXT" : "LBL_AM_TXT")));
+                //TODO: PARA RESTAURAR "AM" "PM" EDITAR LBL NO PAINEL LBL_PM_TXT
+                map.put("name", generalFunc.convertNumberWithRTL( "de " + fromtimedisp + ":00 às " +
+                        LBL_AM_TXT + "" + Totimedisp + ":00 "+ generalFunc.retrieveLangLBl(i == 11 ? "pm" : "am", i == 11 ? "LBL_PM_TXT" : "LBL_AM_TXT")));
+
                 map.put("selname", generalFunc.convertNumberWithRTL(selfromtime + "-" + seltoTime));
 
                 checkmap.put("name", fromtimedisp + " - " + Totimedisp + " " + generalFunc.retrieveLangLBl("am", "LBL_AM_TXT"));
@@ -388,17 +401,17 @@ int screenWidth;
 
             } else {
 
-                fromtime = fromtime % 12;
-                toTime = toTime % 12;
+                fromtime = fromtime % 24;//ALTERAÇÃO: 12 PARA 24
+                toTime = toTime % 24;//ALTERAÇÃO: 12 PARA 24
                 if (fromtime == 0) {
                     fromtime = 12;
                 }
 
                 if (toTime == 0) {
-                    toTime = 12;
+                    toTime  = 24;//ALTERAÇÃO: 12 PARA 24
                 }
                 if (fromtime < 10) {
-                    fromtimedisp = "0" + fromtime;
+                    fromtimedisp = "" + fromtime;
                 } else {
                     fromtimedisp = fromtime + "";
                 }
@@ -409,7 +422,7 @@ int screenWidth;
                     Totimedisp = toTime + "";
                 }
 
-                map.put("name", generalFunc.convertNumberWithRTL(fromtimedisp + " " + generalFunc.retrieveLangLBl("pm", "LBL_PM_TXT") + " - " + Totimedisp + " " + generalFunc.retrieveLangLBl(i == 23 ? "am" : "pm",  i == 23 ? "LBL_AM_TXT" : "LBL_PM_TXT")));
+                map.put("name", generalFunc.convertNumberWithRTL("de " +fromtimedisp + ":00 às " + LBL_PM_TXT + "" + Totimedisp + ":00 " + generalFunc.retrieveLangLBl(i == 23 ? "am" : "pm",  i == 23 ? "LBL_AM_TXT" : "LBL_PM_TXT")));
                 map.put("selname", generalFunc.convertNumberWithRTL(selfromtime + "-" + seltoTime));
 
                 checkmap.put("name", fromtimedisp + " - " + Totimedisp + " " + generalFunc.retrieveLangLBl("pm", "LBL_PM_TXT"));
